@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
 import { PET_CONFIGS, RATING_THRESHOLDS } from '@/game/constants';
 import { cn } from '@/lib/utils';
@@ -31,7 +32,8 @@ const RATING_STYLES: Record<string, { color: string; bg: string; emoji: string; 
 };
 
 export default function ResultScene() {
-  const { getSessionResult, getHighScore, startGame, setGameState, selectedPet, lives } = useGameStore();
+  const navigate = useNavigate();
+  const { getSessionResult, getHighScore, startGame, selectedPet, lives } = useGameStore();
   const [showContent, setShowContent] = useState(false);
   const [animScore, setAnimScore] = useState(0);
 
@@ -83,10 +85,11 @@ export default function ResultScene() {
 
   const handlePlayAgain = () => {
     startGame();
+    navigate('/game');
   };
 
   const handleBackToMenu = () => {
-    setGameState('menu');
+    navigate('/menu');
   };
 
   return (

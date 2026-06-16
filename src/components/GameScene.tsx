@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { GameEngine } from '@/game/engine/GameEngine';
 import { useGameStore } from '@/store/gameStore';
 import GameHUD from './GameHUD';
@@ -6,6 +7,7 @@ import { CANVAS_WIDTH, CANVAS_HEIGHT } from '@/game/constants';
 import { cn } from '@/lib/utils';
 
 export default function GameScene() {
+  const navigate = useNavigate();
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const engineRef = useRef<GameEngine | null>(null);
   const { gameState, pauseGame, resumeGame } = useGameStore();
@@ -28,6 +30,12 @@ export default function GameScene() {
     setShowPauseMenu(gameState === 'paused');
   }, [gameState]);
 
+  useEffect(() => {
+    if (gameState === 'result') {
+      navigate('/result');
+    }
+  }, [gameState, navigate]);
+
   const handlePause = () => {
     pauseGame();
     engineRef.current?.pause();
@@ -40,7 +48,7 @@ export default function GameScene() {
 
   const handleBackToMenu = () => {
     engineRef.current?.stop();
-    useGameStore.getState().setGameState('menu');
+    navigate('/menu');
   };
 
   return (

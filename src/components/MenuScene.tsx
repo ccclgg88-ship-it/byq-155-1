@@ -1,16 +1,19 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useGameStore } from '@/store/gameStore';
 import { PET_CONFIGS, MAX_LIVES, GAME_DURATION } from '@/game/constants';
 import type { PetType } from '@/game/types';
 import { cn } from '@/lib/utils';
 
 export default function MenuScene() {
+  const navigate = useNavigate();
   const { selectedPet, selectPet, startGame, getHighScore } = useGameStore();
   const [showHelp, setShowHelp] = useState(false);
   const highScore = getHighScore();
 
   const handleStart = () => {
     startGame();
+    navigate('/game');
   };
 
   const pets: { type: PetType; desc: string }[] = [
